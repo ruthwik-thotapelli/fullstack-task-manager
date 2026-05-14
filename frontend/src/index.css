@@ -276,9 +276,163 @@ button:disabled {
   }
 }
 
+.notification-filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.notification-summary {
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.notification-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.notification-card.unseen {
+  border: 1px solid #2563eb;
+}
+
+.notification-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.notification-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.notification-message {
+  margin: 10px 0 0;
+  color: #475569;
+}
+
+.notification-priority {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.priority-low {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.priority-high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.notification-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.notification-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (max-width: 720px) {
   .topbar,
   .page-header {
     padding: 18px;
   }
+}
+
+.notification-filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.notification-summary {
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.notification-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.notification-card.unseen {
+  border: 1px solid #2563eb;
+}
+
+.notification-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.notification-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.notification-message {
+  margin: 10px 0 0;
+  color: #475569;
+}
+
+.notification-priority {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.priority-low {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.priority-high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.notification-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.notification-actions {
+  display: flex;
+  justify-content: flex-end;
 }

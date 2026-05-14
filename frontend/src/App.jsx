@@ -1,6 +1,7 @@
 import { Routes, Route, NavLink } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import TaskForm from './pages/TaskForm';
+import Notifications from './pages/Notifications';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <NavLink to="/" end>
             Dashboard
           </NavLink>
+          <NavLink to="/notifications">Notifications</NavLink>
           <NavLink to="/create">Create Task</NavLink>
         </nav>
       </header>
@@ -21,6 +23,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/create" element={<TaskForm />} />
           <Route path="/edit/:id" element={<TaskForm />} />
         </Routes>
