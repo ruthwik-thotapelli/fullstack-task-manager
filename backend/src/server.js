@@ -39,6 +39,6 @@ connectDB()
     });
   })
   .catch((error) => {
-    console.error('Unable to connect to MongoDB:', error.message);
+    console.error('Unable to connect to MySQL:', error.message);
     process.exit(1);
   });

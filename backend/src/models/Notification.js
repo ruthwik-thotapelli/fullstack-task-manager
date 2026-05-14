@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const { getPool } = require('../config/db');
 
 const priorityValues = {
   Low: 1,
@@ -6,59 +6,90 @@ const priorityValues = {
   High: 3,
 };
 
-const notificationSchema = new mongoose.Schema(
-  {
-    studentId: {
-      type: String,
-      required: [true, 'Student ID is required'],
-      index: true,
-    },
-    type: {
-      type: String,
-      enum: ['Event', 'Result', 'Placement'],
-      required: [true, 'Notification type is required'],
-      index: true,
-    },
-    message: {
-      type: String,
-      required: [true, 'Message is required'],
-      trim: true,
-      maxlength: [500, 'Message cannot exceed 500 characters'],
-    },
-    seen: {
-      type: Boolean,
-      default: false,
-      index: true,
-    },
-    priority: {
-      type: String,
-      enum: ['Low', 'Medium', 'High'],
-      default: 'Medium',
-      index: true,
-    },
-    priorityValue: {
-      type: Number,
-      default: priorityValues.Medium,
-      index: true,
-    },
-    metadata: {
-      type: mongoose.Schema.Types.Mixed,
-      default: {},
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-      index: true,
-    },
-  },
-  {
-    timestamps: true,
+const findNotifications = async ({ type, priority, unseen, limit, page }) => {
+  const pool = getPool();
+  const conditions = [];
+  const params = [];
+
+  if (type) {
+    conditions.push('type = ?');
+    params.push(type);
   }
-);
+  if (priority) {
+    conditions.push('priority = ?');
+    params.push(priority);
+  }
+  if (unseen) {
+    conditions.push('seen = 0');
+  }
 
-notificationSchema.pre('validate', function (next) {
-  this.priorityValue = priorityValues[this.priority] || priorityValues.Medium;
-  next();
-});
+  let sql = 'SELECT * FROM notifications';
+  if (conditions.length > 0) {
+    sql += ' WHERE ' + conditions.join(' AND ');
+  }
+  sql += ' ORDER BY priorityValue DESC, timestamp DESC';
+  sql += ' LIMIT ? OFFSET ?';
 
-module.exports = mongoose.model('Notification', notificationSchema);
+  const limitValue = Math.min(Number(limit) || 20, 100);
+  const pageValue = Math.max(Number(page) || 1, 1);
+  params.push(limitValue, (pageValue - 1) * limitValue);
+
+  const [rows] = await pool.query(sql, params);
+  return rows;
+};
+
+const countNotifications = async ({ type, priority, unseen }) => {
+  const pool = getPool();
+  const conditions = [];
+  const params = [];
+
+  if (type) {
+    conditions.push('type = ?');
+    params.push(type);
+  }
+  if (priority) {
+    conditions.push('priority = ?');
+    params.push(priority);
+  }
+  if (unseen) {
+    conditions.push('seen = 0');
+  }
+
+  let sql = 'SELECT COUNT(*) AS total FROM notifications';
+  if (conditions.length > 0) {
+    sql += ' WHERE ' + conditions.join(' AND ');
+  }
+
+  const [rows] = await pool.query(sql, params);
+  return rows[0].total;
+};
+
+const findNotificationById = async (id) => {
+  const pool = getPool();
+  const [rows] = await pool.query('SELECT * FROM notifications WHERE id = ?', [id]);
+  return rows[0];
+};
+
+const createNotification = async ({ studentId, type, message, priority, metadata }) => {
+  const pool = getPool();
+  const priorityValue = priorityValues[priority] || priorityValues.Medium;
+  const [result] = await pool.query(
+    'INSERT INTO notifications (studentId, type, message, priority, priorityValue, metadata) VALUES (?, ?, ?, ?, ?, ?)',
+    [studentId, type, message, priority, priorityValue, JSON.stringify(metadata || {})]
+  );
+  return findNotificationById(result.insertId);
+};
+
+const markNotificationRead = async (id) => {
+  const pool = getPool();
+  await pool.query('UPDATE notifications SET seen = 1 WHERE id = ?', [id]);
+  return findNotificationById(id);
+};
+
+module.exports = {
+  findNotifications,
+  countNotifications,
+  findNotificationById,
+  createNotification,
+  markNotificationRead,
+};

@@ -8,16 +8,19 @@ const getNotifications = asyncHandler(async (req, res) => {
   const priorityFilter = req.query.priority;
   const unseenFilter = req.query.unseen === 'true';
 
-  const query = {};
-  if (typeFilter) query.type = typeFilter;
-  if (priorityFilter) query.priority = priorityFilter;
-  if (unseenFilter) query.seen = false;
+  const total = await Notification.countNotifications({
+    type: typeFilter,
+    priority: priorityFilter,
+    unseen: unseenFilter,
+  });
 
-  const total = await Notification.countDocuments(query);
-  const notifications = await Notification.find(query)
-    .sort({ priorityValue: -1, timestamp: -1 })
-    .skip((page - 1) * limit)
-    .limit(limit);
+  const notifications = await Notification.findNotifications({
+    type: typeFilter,
+    priority: priorityFilter,
+    unseen: unseenFilter,
+    limit,
+    page,
+  });
 
   res.status(200).json({
     success: true,
@@ -32,7 +35,7 @@ const getNotifications = asyncHandler(async (req, res) => {
 });
 
 const getNotificationById = asyncHandler(async (req, res) => {
-  const notification = await Notification.findById(req.params.id);
+  const notification = await Notification.findNotificationById(req.params.id);
   if (!notification) {
     res.status(404);
     throw new Error('Notification not found');
@@ -42,16 +45,14 @@ const getNotificationById = asyncHandler(async (req, res) => {
 });
 
 const markRead = asyncHandler(async (req, res) => {
-  const notification = await Notification.findById(req.params.id);
+  const notification = await Notification.findNotificationById(req.params.id);
   if (!notification) {
     res.status(404);
     throw new Error('Notification not found');
   }
 
-  notification.seen = true;
-  await notification.save();
-
-  res.status(200).json({ success: true, data: notification });
+  const updatedNotification = await Notification.markNotificationRead(req.params.id);
+  res.status(200).json({ success: true, data: updatedNotification });
 });
 
 const createNotification = asyncHandler(async (req, res) => {
@@ -62,7 +63,7 @@ const createNotification = asyncHandler(async (req, res) => {
     throw new Error('studentId, type, and message are required');
   }
 
-  const notification = await Notification.create({
+  const notification = await Notification.createNotification({
     studentId,
     type,
     message,

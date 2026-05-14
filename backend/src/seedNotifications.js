@@ -29,9 +29,11 @@ const sampleNotifications = [
 ];
 
 const seedNotifications = async () => {
-  const count = await Notification.countDocuments();
+  const count = await Notification.countNotifications({});
   if (count === 0) {
-    await Notification.insertMany(sampleNotifications);
+    for (const notification of sampleNotifications) {
+      await Notification.createNotification(notification);
+    }
     console.log('Seeded notification sample data');
   }
 };

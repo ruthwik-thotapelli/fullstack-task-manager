@@ -3,13 +3,12 @@ const asyncHandler = require('../middleware/asyncHandler');
 
 const getTasks = asyncHandler(async (req, res) => {
   const statusFilter = req.query.status;
-  const filter = statusFilter ? { status: statusFilter } : {};
-  const tasks = await Task.find(filter).sort({ createdAt: -1 });
+  const tasks = await Task.findTasks(statusFilter);
   res.status(200).json({ success: true, data: tasks });
 });
 
 const getTaskById = asyncHandler(async (req, res) => {
-  const task = await Task.findById(req.params.id);
+  const task = await Task.findTaskById(req.params.id);
   if (!task) {
     res.status(404);
     throw new Error('Task not found');
@@ -25,38 +24,36 @@ const createTask = asyncHandler(async (req, res) => {
     throw new Error('Title and description are required');
   }
 
-  const task = await Task.create({ title, description, status, priority });
+  const task = await Task.createTask({ title, description, status, priority });
   res.status(201).json({ success: true, data: task });
 });
 
 const updateTask = asyncHandler(async (req, res) => {
-  const task = await Task.findById(req.params.id);
-  if (!task) {
+  const existingTask = await Task.findTaskById(req.params.id);
+  if (!existingTask) {
     res.status(404);
     throw new Error('Task not found');
   }
 
   const updates = {
-    title: req.body.title ?? task.title,
-    description: req.body.description ?? task.description,
-    status: req.body.status ?? task.status,
-    priority: req.body.priority ?? task.priority,
+    title: req.body.title ?? existingTask.title,
+    description: req.body.description ?? existingTask.description,
+    status: req.body.status ?? existingTask.status,
+    priority: req.body.priority ?? existingTask.priority,
   };
 
-  Object.assign(task, updates);
-  const updatedTask = await task.save();
-
+  const updatedTask = await Task.updateTask(req.params.id, updates);
   res.status(200).json({ success: true, data: updatedTask });
 });
 
 const deleteTask = asyncHandler(async (req, res) => {
-  const task = await Task.findById(req.params.id);
-  if (!task) {
+  const existingTask = await Task.findTaskById(req.params.id);
+  if (!existingTask) {
     res.status(404);
     throw new Error('Task not found');
   }
 
-  await task.remove();
+  await Task.deleteTask(req.params.id);
   res.status(200).json({ success: true, message: 'Task deleted successfully' });
 });
 

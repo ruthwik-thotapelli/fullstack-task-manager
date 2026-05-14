@@ -1,7 +1,7 @@
 ﻿# Full Stack Task Manager
 
 This repository contains a complete full-stack application with task management and notification workflow support.
-It includes a React frontend, an Express backend, MongoDB integration, logging middleware, error handling, and a notification API implementation for the assessment.
+It includes a React frontend, an Express backend, MySQL integration, logging middleware, error handling, and a notification API implementation for the assessment.
 
 ---
 
@@ -11,7 +11,7 @@ It includes a React frontend, an Express backend, MongoDB integration, logging m
 - Task filtering and task board UI
 - Notification system with protected API endpoints
 - Frontend notification page with filters and unread state
-- MongoDB schema design for notifications with priority handling
+- MySQL schema design for tasks and notifications with priority handling
 - Seed helper to load sample notifications on startup
 - Project design documentation: `notification_system_design.md`
 
@@ -28,8 +28,8 @@ It includes a React frontend, an Express backend, MongoDB integration, logging m
 ### Backend
 - Node.js
 - Express
-- MongoDB
-- Mongoose
+- MySQL
+- mysql2
 
 ### Dev utilities
 - nodemon
@@ -84,7 +84,7 @@ fullstack-task-manager/
 
 - Node.js 18+ or compatible
 - npm
-- MongoDB connection string
+- MySQL server access
 
 ### Backend setup
 
@@ -93,13 +93,12 @@ fullstack-task-manager/
    ```bash
    npm install
    ```
-3. Create a `.env` file in `backend/` with:
-   ```env
-   MONGO_URI=<your-mongodb-connection-string>
-   API_TOKEN=notif-demo-token
-   PORT=5000
+3. Copy the example env file and update the values in `backend/`:
+   ```bash
+   cp backend/.env.example backend/.env
    ```
-4. Start the backend server:
+4. Open `backend/.env` and fill in your MySQL credentials.
+5. Start the backend server:
    ```bash
    npm run dev
    ```
