@@ -26,7 +26,7 @@
   "data": [
     {
       "_id": "64d28d8a80d1bc3ab01e2aa1",
-      "studentId": "1042",
+      "studentId": "12317077",
       "type": "Placement",
       "message": "Placement drive opening for final-year students.",
       "seen": false,
@@ -94,7 +94,7 @@ NoSQL/MongoDB is a good choice for this workload because:
 The query:
 ```
 SELECT * FROM notifications
-WHERE studentID = 1042 AND isRead = false
+WHERE studentID = 12317077 AND isRead = false
 ORDER BY createdAt ASC;
 ```
 
@@ -111,7 +111,7 @@ Problems:
 ```
 SELECT *
 FROM notifications
-WHERE studentId = '1042'
+WHERE studentId = '12317077'
   AND seen = false
 ORDER BY priorityValue DESC, timestamp DESC
 LIMIT 50;
