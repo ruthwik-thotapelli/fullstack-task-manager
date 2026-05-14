@@ -1,0 +1,284 @@
+/* Global page styles */
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1f2937;
+  background: #f8fafc;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at top, #f7f9fc 0%, #eef2f7 45%, #f8fafc 100%);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 24px;
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.topbar h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.75rem, 2.2vw, 2.5rem);
+}
+
+.topbar p {
+  margin: 0;
+  color: #475569;
+  max-width: 540px;
+}
+
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #475569;
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.topbar a.active,
+.topbar a:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.page-header h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+}
+
+.page-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.dashboard-page,
+.form-page {
+  padding: 12px 0 32px;
+}
+
+.filter-row,
+.form-card,
+.task-grid,
+.empty-state,
+.loading-state {
+  width: 100%;
+}
+
+.filter-row {
+  margin-bottom: 22px;
+}
+
+.filter-row label {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.filter-row select,
+input[type='text'],
+textarea,
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.form-card {
+  padding: 28px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.form-card h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.form-card p {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #475569;
+}
+
+.form-card label {
+  display: block;
+  margin-bottom: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.footer {
+  margin-top: 40px;
+  padding: 18px 0;
+  text-align: center;
+  color: #64748b;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.primary-button {
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+}
+
+.secondary-button {
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
+.secondary-button:hover {
+  background: #cbd5e1;
+}
+
+.danger-button {
+  color: #ffffff;
+  background: #ef4444;
+}
+
+.danger-button:hover {
+  background: #dc2626;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.task-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.error-banner {
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #fee2e2;
+  color: #b91c1c;
+  margin-bottom: 18px;
+}
+
+.empty-state,
+.loading-state {
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.07);
+  color: #334155;
+}
+
+.empty-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  font-size: 1.75rem;
+  color: #22c55e;
+  border-radius: 50%;
+  background: #ecfdf5;
+  margin-bottom: 14px;
+}
+
+.loading-state .spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 6px solid rgba(37, 99, 235, 0.18);
+  border-top-color: #2563eb;
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 14px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar,
+  .page-header {
+    padding: 18px;
+  }
+}
